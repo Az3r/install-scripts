@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # this script installs necessary tools for development experience
 
 export NVM_DIR=$HOME/.nvm
@@ -17,11 +17,11 @@ git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvi
 
 # node version manager
 sudo apt-get remove nodejs -y
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | sh
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 
 # rust
 sudo apt-get install -y libssl-dev pkg-config
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash
 rustup default nightly
 cargo install cargo-edit
 # amethyst game engine
@@ -30,7 +30,7 @@ sudo apt-get install -y gcc pkg-config openssl libasound2-dev cmake build-essent
 sudo apt-get install -y libasound2-dev libudev-dev pkg-config
 
 # docker and docker-compose
-wget -qO- https://gist.githubusercontent.com/wdullaer/f1af16bd7e970389bad3/raw/4a5a72aece57e1deca926894e5919f90350c706d/install.sh | sh
+wget -qO- https://gist.githubusercontent.com/wdullaer/f1af16bd7e970389bad3/raw/4a5a72aece57e1deca926894e5919f90350c706d/install.sh | bash
 
 # postman
 sudo snap install postman --channel=v9/stable

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # this script installs necessary tools for basic usage
 sudo apt-get update && sudo apt-get upgrade -y
 

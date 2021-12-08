@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # this script is for personal usecases
 
 sudo apt-get install virtualbox -y
