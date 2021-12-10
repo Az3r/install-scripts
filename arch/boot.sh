@@ -17,23 +17,25 @@
 # arch-chroot /mnt
 
 timedatectl set-timezone Asia/Ho_Chi_Minh
+ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
 hwclock --systohc
 
 echo "en_US.UTF-8 UTF-8" >>/etc/locale.gen
 locale-gen
 
 echo "LANG=en_US.UTF-8" >/etc/locale.conf
-echo "azerarch" >/etc/hostname
+hostnamectl set-hostname azerarch
 
 echo -e "127.0.0.1\t\tlocalhost\r\n::1\t\t\tlocalhost\r\n127.0.1.1\t\tazerarch" >/etc/hosts
 
-pacman -S --noconfirm grub efibootmgr os-prober intel-ucode networkmanager
+pacman -S --noconfirm grub efibootmgr os-prober intel-ucode networkmanager vim nano
 echo "GRUB_DISABLE_OS_PROBER=false" >>/etc/default/grub
-mkdir -p /boot/efi
-mount /dev/sda1 /boot/efi
+mkdir -p /boot/EFI
+mount /dev/sda1 /boot/EFI
 grub-install --target=x86_64-efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 
-passwd
+systemctl enable NetworkManager
 
+passwd
 # reboot your computer
