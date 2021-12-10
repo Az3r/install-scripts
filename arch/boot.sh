@@ -32,8 +32,8 @@ echo -e "127.0.0.1\t\tlocalhost\r\n::1\t\t\tlocalhost\r\n127.0.1.1\t\tazerarch" 
 
 # user
 useradd -m azer
-usermod -aG wheel,audio,video,optical,storage
-pacman -S sudo
+usermod -aG wheel,audio,video,optical,storage azer
+pacman -S --noconfirm sudo
 echo "%wheel ALL=(ALL) ALL" >>/etc/sudoers
 
 # grub
