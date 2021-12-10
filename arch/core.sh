@@ -2,7 +2,7 @@
 # list of commands after you have logged into arch
 
 # install yay
-pacman -S --noconfirm base-devel
+sudo pacman -S --noconfirm base-devel
 git clone https://aur.archlinux.org/yay.git
 cd yay || exit
 yes | makepkg -si
