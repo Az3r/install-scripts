@@ -43,8 +43,10 @@ sudo snap install dotnet-sdk --classic --edge
 sudo snap install go --edge --classic
 
 # formatter
-sudo apt-get install clang-format -y
-pip install sqlparse
+sudo apt-get install -y jq clang-format shellcheck
+pip3 install sqlparse
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
+npm install -g prettierd
 
 # tools
 sudo apt-get install -y fd-find fzf
