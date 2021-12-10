@@ -12,9 +12,9 @@
 
 # pacstrap /mnt base linux linux-firmware
 
-genfstab -U /mnt >>/mnt/etc/fstab
+# genfstab -U /mnt >>/mnt/etc/fstab
 
-arch-chroot /mnt
+# arch-chroot /mnt
 
 timedatectl set-timezone Asia/Ho_Chi_Minh
 hwclock --systohc
