@@ -119,6 +119,7 @@ fi
 alias vim="nvim"
 alias lg="lazygit"
 alias python="python3"
+alias pip="pip3"
 alias fd="fdfind"
 alias code="code-insiders"
 

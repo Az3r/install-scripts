@@ -23,10 +23,10 @@ Plug 'tpope/vim-dotenv' " support for .env
 " begin snippets
 Plug 'hrsh7th/vim-vsnip' " vscode's snippet feature in vim.
 Plug 'hrsh7th/vim-vsnip-integ'
-" Plug 'rafamadriz/friendly-snippets' " preconfigured snippets for lots of programming language
-Plug 'dsznajder/vscode-es7-javascript-react-snippets' "ES7 React/Redux/GraphQL/React-Native snippets
+Plug 'rafamadriz/friendly-snippets' " preconfigured snippets for lots of programming language
+" Plug 'dsznajder/vscode-es7-javascript-react-snippets' "ES7 React/Redux/GraphQL/React-Native snippets
 Plug 'Alexisvt/flutter-snippets' " Flutter widget snippets
-Plug 'Nash0x7E2/awesome-flutter-snippets' " FLutter snippets
+Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
 " end snippets
 " begin cmp plugins
 Plug 'hrsh7th/nvim-cmp'
@@ -39,6 +39,7 @@ Plug 'RRethy/vim-illuminate' " automatically highlighting other uses of the curr
 Plug 'sunjon/shade.nvim' " dims your inactive windows, making it easier to see the active window at a glance
 Plug 'glepnir/dashboard-nvim' " dashboard
 Plug 'akinsho/bufferline.nvim' " display buffers on top
+Plug 'kazhala/close-buffers.nvim' " quickly delete multiple buffers, work with bufferline
 Plug 'hoob3rt/lualine.nvim' " statusline
 Plug 'ggandor/lightspeed.nvim' " vim-sneak for neovim
 Plug 'tpope/vim-repeat' " repeat command
@@ -151,17 +152,16 @@ nmap ? :noh<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <space>f <cmd>Telescope find_files<cr>
-nnoremap ;f <cmd>Telescope find_files<cr>
 " search for symbols
 nnoremap <silent> <space>a :Telescope lsp_document_symbols<CR>
-nnoremap <silent> <space>A :Telescope lsp_workspace_symbols<CR>
+nnoremap <silent> <space>w :Telescope lsp_workspace_symbols<CR>
 " search anything in workspace
-nnoremap ;g <cmd>Telescope live_grep<cr>
+nnoremap <silent> <space>l <cmd>Telescope live_grep<cr>
 " search current open buffers
-nnoremap ;b <cmd>Telescope buffers<cr>
 nnoremap <C-p> <cmd>Telescope buffers<cr>
+nnoremap <space>p <cmd>Telescope buffers<cr>
 " search for commands
-nnoremap ;h <cmd>Telescope help_tags<cr>
+nnoremap <space>h <cmd>Telescope help_tags<cr>
 
 " Files explorer
 let g:nvim_tree_width = 40
@@ -174,24 +174,25 @@ vnoremap <leader>v "+p
 nnoremap <leader>v "+p
 inoremap <C-v> <C-r>+
 
-" Terminal
+" stop insert mode
+inoremap jj <ESC>
 tnoremap jj <C-\><C-n>
 
 " reload editor
-nnoremap <leader>r :bufdo! e<CR>
-
-" saving
-nnoremap <leader>w :w<CR>
-nnoremap W :wq<CR>
-nnoremap <leader>a :wa<CR>
-nnoremap Z :q!<CR>
-nnoremap X :qa!<CR>
-
-" stop insert mode
-inoremap jj <ESC>
+nnoremap <F5> :bufdo! e<CR>
 
 nnoremap $ g_
 nnoremap 0 _
+
+" buffer managment
+nnoremap <a-j> :BufferLineCyclePrev<CR>
+nnoremap <a-k> :BufferLineCycleNext<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>a :wa<CR>
+nnoremap <a-w> :BDelete this<CR>
+nnoremap <a-a> :BWipeout all<CR>
+nnoremap <a-q> :q<CR>
+
 
 " Vimux
 let g:VimuxHeight = '35'
@@ -215,12 +216,11 @@ nnoremap <silent> _ :resize -5<CR>
 
 " vim-dadbod
 nnoremap <leader>ss :DBUIToggle<CR>
-nnoremap <leader>se :DB %<CR>
-xnoremap <leader>se :DB<CR>
 
 " formatting
 autocmd BufWritePre * lua vim.lsp.buf.formatting_seq_sync()
-nnoremap <silent> ff <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>
+nnoremap <silent> <space>s <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>
+autocmd FileType sql nnoremap <silent> <space>s :%!sqlfmt<CR>
 
 " Show documentation
 nnoremap <silent> K :Lspsaga hover_doc<CR>
@@ -274,9 +274,9 @@ nnoremap <leader>fp :FlutterCopyProfileUrl<CR>
 nnoremap <leader>fc <cmd>lua require('telescope').extensions.flutter.commands()<CR>
 
 " working with REST
-nnoremap <leader>hh <Plug>RestNvim
-nnoremap <leader>hl <Plug>RestNvimLast
-nnoremap <leader>hp <Plug>RestNvimPreview
+nmap <leader>rr <Plug>RestNvim<CR>
+nmap <leader>rl <Plug>RestNvimLast<CR>
+nmap <leader>rp <Plug>RestNvimPreview<CR>
 
 " snippet
 imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
@@ -328,7 +328,7 @@ let g:Hexokinase_optInPatterns = [
 let g:Hexokinase_ftEnabled = ['sass', 'css', 'html', 'javascript', 'typescript']
 
 " auto completion
-autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+autocmd FileType sql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
 set completeopt-=longest
 
 " dashboard
@@ -340,15 +340,18 @@ lua << EOF
 -- Syntax highlighting support
 local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 parser_configs.http = {
-    install_info = {
-        url = "https://github.com/NTBBloodbath/tree-sitter-http",
-        files = {"src/parser.c"},
-        branch = "main"
-    }
+  install_info = {
+    url = "https://github.com/NTBBloodbath/tree-sitter-http",
+    files = {"src/parser.c"},
+    branch = "main"
+  }
 }
 require "nvim-treesitter.configs".setup {
     ensure_installed = "all",
     highlight = {
+        enable = true
+    },
+    indent = {
         enable = true
     }
 }
@@ -408,7 +411,7 @@ lsp_installer.on_server_ready(
         local opts = {
             capabilities = capabilities,
             on_attach = function(client)
-                require('illuminate').on_attach(client)
+                require("illuminate").on_attach(client)
             end
         }
 
@@ -466,7 +469,12 @@ require("trouble").setup {
 local telescope = require("telescope")
 telescope.setup {
     defaults = {
-        file_ignore_patterns = {"node_modules"}
+        file_ignore_patterns = {"node_modules", ".git"}
+    },
+  pickers = {
+    find_files = {
+      hidden = true
+      }
     }
 }
 telescope.load_extension("flutter")
@@ -483,14 +491,27 @@ require'shade'.setup({
   opacity_step = 1,
 })
 
-require("rest-nvim").setup {}
-require("nvim-ts-autotag").setup {}
-require("nvim-autopairs").setup {}
 require("bufferline").setup {
   options = {
     numbers = "buffer_id"
   }
 }
+
+require('close_buffers').setup({
+  preserve_window_layout = { 'this' },
+  next_buffer_cmd = function(windows)
+    require('bufferline').cycle(1)
+    local bufnr = vim.api.nvim_get_current_buf()
+
+    for _, window in ipairs(windows) do
+      vim.api.nvim_win_set_buf(window, bufnr)
+    end
+  end,
+})
+
+require("rest-nvim").setup {}
+require("nvim-ts-autotag").setup {}
+require("nvim-autopairs").setup {}
 require("gitsigns").setup {}
 require('tabout').setup{}
 EOF
