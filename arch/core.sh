@@ -5,7 +5,7 @@
 pacman -S --noconfirm base-devel
 git clone https://aur.archlinux.org/yay.git
 cd yay || exit
-yes || makepkg -si
+yes | makepkg -si
 cd ..
 
 # display manager
