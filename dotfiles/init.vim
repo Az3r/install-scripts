@@ -23,8 +23,8 @@ Plug 'tpope/vim-dotenv' " support for .env
 " begin snippets
 Plug 'hrsh7th/vim-vsnip' " vscode's snippet feature in vim.
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'rafamadriz/friendly-snippets' " preconfigured snippets for lots of programming language
-" Plug 'dsznajder/vscode-es7-javascript-react-snippets' "ES7 React/Redux/GraphQL/React-Native snippets
+"Plug 'rafamadriz/friendly-snippets' " preconfigured snippets for lots of programming language
+Plug 'dsznajder/vscode-es7-javascript-react-snippets' "ES7 React/Redux/GraphQL/React-Native snippets
 Plug 'Alexisvt/flutter-snippets' " Flutter widget snippets
 Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
 " end snippets
@@ -371,12 +371,30 @@ cmp.setup(
         mapping = {
             ["<C-space>"] = cmp.mapping.complete(),
             ["<C-e>"] = cmp.mapping.close(),
-            ["<tab>"] = cmp.mapping.confirm(
-                {
-                    behavior = cmp.ConfirmBehavior.Insert,
-                    select = true
-                }
-            ),
+            ["<Tab>"] = function(fallback)
+                if cmp.visible() then
+                    -- cmp.select_next_item
+                    cmp.confirm(
+                        {
+                            behavior = cmp.ConfirmBehavior.Insert,
+                            select = true
+                        }
+                    )
+                elseif vim.fn["vsnip#available"](1) ~= 0 then
+                    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>(vsnip-expand-or-jump)", true, true, true), "")
+                else
+                    fallback()
+                end
+            end,
+            ["<S-Tab>"] = function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif vim.fn["vsnip#available"](1) ~= 0 then
+                    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>(vsnip-jump-prev)", true, true, true), "")
+                else
+                    fallback()
+                end
+            end,
             ["<C-f>"] = cmp.mapping.confirm(
                 {
                     behavior = cmp.ConfirmBehavior.Insert,

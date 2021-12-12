@@ -9,8 +9,8 @@ yes | makepkg -si
 cd ..
 
 # display manager
-sudo pacman -S --noconfirm lightdm lightdm-webkit-theme-litarvan xorg-server xorg-xinit xterm
-yay -S xinit-xsession
-
+sudo pacman -S --noconfirm lightdm lightdm-webkit-theme-litarvan lightdm-webkit2-greeter xorg-server xorg-xinit xterm i3-wm
+yes I | yay -S xinit-xsession
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
 systemctl enable lightdm
 # note: config /etc/lightdm/lightdm.conf greeter-session and session-wraper
