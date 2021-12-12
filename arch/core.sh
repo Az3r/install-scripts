@@ -21,9 +21,10 @@ systemctl enable lightdm
 # note: /etc/lightdm/lightdm-webkit2-greeter.conf set theme to litarvan
 
 # window manager
-printf "n\nN\ny\n" | yay -S polybar
+printf "1\nn\nN\ny\n" | yay -S polybar
 sudo pacman -S --noconfirm i3-wm polybar i3status
 mkdir -p ~/.config/polybar
 cp /usr/share/doc/polybar/config ~/.config/polybar/config
 print "#!/bin/bash\nkillall -q polybar\npolybar mybar 2>&1 | tee -a /tmp/polybar.log & disown" >~/.config/polybar/launch.sh
-echo "exec_always --no-startup-id $HOME/.config/polybar/launch.sh" >>~/.config/i3/config
+
+#echo "exec_always --no-startup-id $HOME/.config/polybar/launch.sh" >>~/.config/i3/config
