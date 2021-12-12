@@ -19,3 +19,4 @@ chmod +x ~/.xinitrc
 
 # systemctl enable lightdm
 # note: config /etc/lightdm/lightdm.conf greeter-session and session-wraper
+# note: /etc/lightdm/lightdm-webkit2-greeter.conf set theme to litarvan
