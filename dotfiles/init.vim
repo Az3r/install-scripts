@@ -191,6 +191,7 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>a :wa<CR>
 nnoremap <a-w> :BDelete this<CR>
 nnoremap <a-a> :BWipeout all<CR>
+nnoremap <a-o> :BWipeout other<CR>
 nnoremap <a-q> :q<CR>
 
 
@@ -243,7 +244,7 @@ nnoremap <silent>gr :Lspsaga rename<CR>
 nnoremap <silent><F2> :Lspsaga rename<CR>
 " FLoat terminal
 nnoremap <silent> ;t :Lspsaga open_floaterm<CR>
-tmap <silent> <C-q> jj:Lspsaga close_floaterm<CR>
+tmap <silent> <a-q> jj:Lspsaga close_floaterm<CR>
 nnoremap <silent> ;T :Lspsaga close_floaterm<CR>
 " Jump to diagnostics
 nnoremap <silent> ]g :Lspsaga diagnostic_jump_next<CR>

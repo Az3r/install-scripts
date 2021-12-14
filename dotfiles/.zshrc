@@ -76,18 +76,21 @@ plugins=(git gitignore npm dotnet web-search tmux
 source $ZSH/oh-my-zsh.sh
 source $NVM_DIR/nvm.sh
 
-# User configuration
+export VISUAL=nvim
+export EDITOR=nvim
+
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk/
 export ANDROID_HOME=$ANDROID_SDK_ROOT
 export ANDROID_PREFS_ROOT=$HOME
 export ANDROID_EMULATOR_HOME=$ANDROID_PREFS_ROOT/.android
 export ANDROID_AVD_HOME=$ANDROID_EMULATOR_HOME/avd
-export GEM_HOME=$HOME/gems
-export DENO_INSTALL=$HOME/.deno
-export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude node_modules'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 export NODE_PATH="$(which node)"
 export NPM_PATH="$(which npm)"
+
 export GOPATH=$HOME/go
 export FLUTTER_SDK=$HOME/.flutter
 
@@ -120,7 +123,6 @@ alias vim="nvim"
 alias lg="lazygit"
 alias python="python3"
 alias pip="pip3"
-alias fd="fdfind"
 alias code="code-insiders"
 
 path+=$ANDROID_SDK_ROOT/emulator 
