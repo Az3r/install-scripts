@@ -21,7 +21,7 @@ yay -S --noconfirm ibus-unikey
 sudo pacman -S --noconrim noto-fonts noto-fonts-emoji ttf-hack ttf-roboto
 
 # terminal
-sudo pacman -S --noconfirm tmux zsh alacritty
+sudo pacman -S --noconfirm tmux zsh alacritty mesa
 
 # oh-my-zsh
 rm -vrf "$ZSH"
