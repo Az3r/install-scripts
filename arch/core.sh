@@ -11,17 +11,17 @@ cd yay || exit
 yes | makepkg -si
 cd ..
 rm -rf yay
+yay -Yg --save --answerclean all --answerdiff n --removemake --nocleanmenu --nodiffmenu --nouseask
 
 # unikey
 sudo pacman -S --noconfirm ibus
-yay -S -Yg --save --answerclean all --answerdiff n --nocleanmenu --nodiffmenu ibus-unikey
+yay -S --noconfirm ibus-unikey
 
 # fonts
 sudo pacman -S --noconrim noto-fonts noto-fonts-emoji ttf-hack ttf-roboto
 
 # terminal
 sudo pacman -S --noconfirm tmux zsh alacritty
-chsh -s "$(which zsh)" # set to default shell
 
 # oh-my-zsh
 rm -vrf "$ZSH"
@@ -40,15 +40,14 @@ sudo pacman -S --noconfirm xf86-video-fbdev xf86-video-intel
 
 # display manager
 sudo pacman -S --noconfirm lightdm lightdm-webkit-theme-litarvan lightdm-webkit2-greeter
-systemctl enable lightdm
 
 # window manager
-yay -S -Yg --save --answerclean all --answerdiff n --nocleanmenu --nodiffmenu polybar
-sudo pacman -S --noconfirm i3-wm polybar i3status i3lock xss-lock nitrogen network-manager-applet networkmanager
+echo "1" | yay -S --noconfirm polybar
+sudo pacman -S --noconfirm i3-wm i3status i3lock xss-lock nitrogen network-manager-applet networkmanager
 
 # sound
 sudo pacman -S --noconfirm pulseaudio pulseaudio-alsa pulseaudio-bluetooth pulseaudio-equalizer
-yay -S -Yg --save --answerclean all --answerdiff n --nocleanmenu --nodiffmenu pacmixer
+yay -S --noconfirm pacmixer
 
 #sudo pacman -S --noconfirm avahi
 sudo pacman -S --noconfirm firefox
