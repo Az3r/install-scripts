@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config/efm-langserver" && ln -vsf "$DOTFILE_DIR/efmconfig.yaml"
 mkdir -p "$HOME/.local/share/fonts/" && ln -vsf -t "$HOME/.local/share/fonts/" "$DOTFILE_DIR/NerdFonts"
 mkdir -p "$HOME/.config/i3" && ln -vsf -t "$HOME/.config/i3" "$DOTFILE_DIR/i3.conf"
 mkdir -p "$HOME/.config/polybar" && ln -vsf -t "$HOME/.config/polybar" "$DOTFILE_DIR/polybar.conf" "$DOTFILE_DIR/polybarlaunch.sh"
-mkdir -p "/etc/lightdm" && ln -vsf -t "/etc/lightdm" "$DOTFILE_DIR/lightdm.conf" "$DOTFILE_DIR/lightdm-webkit2-greeter.conf"
+mkdir -p "/etc/lightdm" && sudo ln -vsf -t "/etc/lightdm" "$DOTFILE_DIR/lightdm.conf" "$DOTFILE_DIR/lightdm-webkit2-greeter.conf"
 
 # guake --restore-preferences "$DOTFILE_DIR/guake" # optional if you use guake
 fc-cache -f -v

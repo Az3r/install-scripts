@@ -3,7 +3,7 @@
 export ZSH=$HOME/.oh-my-zsh/
 
 sudo pacman -Syu --noconfirm
-sudo pacman -S --noconrim curl wget base-devel
+sudo pacman -S --noconfirm curl wget base-devel xclip
 
 # install yay
 git clone https://aur.archlinux.org/yay.git
@@ -34,14 +34,13 @@ git clone https://github.com/gpakosz/.tmux.git ~/.tmux # tmux
 ln -sf ~/.tmux/.tmux.conf ~/.tmux.conf
 
 # display server
-sudo pacman -S --noconfirm xorg-server xterm xorg-xrandr autorandr xf86-video-fbdev
+sudo pacman -S --noconfirm xorg-server xterm xorg-xrandr autorandr
+sudo pacman -S --noconfirm xf86-video-fbdev xf86-video-intel
 # note: install your graphical driver
 
 # display manager
 sudo pacman -S --noconfirm lightdm lightdm-webkit-theme-litarvan lightdm-webkit2-greeter
 systemctl enable lightdm
-# note: config /etc/lightdm/lightdm.conf greeter-session
-# note: /etc/lightdm/lightdm-webkit2-greeter.conf set theme to litarvan
 
 # window manager
 yay -S -Yg --save --answerclean all --answerdiff n --nocleanmenu --nodiffmenu polybar
