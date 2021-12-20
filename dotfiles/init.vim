@@ -35,6 +35,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'hrsh7th/cmp-buffer'
 " end cmp plugins
+Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
 Plug 'RRethy/vim-illuminate' " automatically highlighting other uses of the current word under the cursor
 Plug 'sunjon/shade.nvim' " dims your inactive windows, making it easier to see the active window at a glance
 Plug 'glepnir/dashboard-nvim' " dashboard
@@ -219,9 +220,8 @@ nnoremap <silent> _ :resize -5<CR>
 nnoremap <leader>ss :DBUIToggle<CR>
 
 " formatting
-autocmd BufWritePre * lua vim.lsp.buf.formatting_seq_sync()
-nnoremap <silent> <space>s <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>
-autocmd FileType sql nnoremap <silent> <space>s :%!sqlfmt<CR>
+autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()
+nnoremap <silent> <space>s <cmd>lua vim.lsp.buf.formatting_sync()<CR>
 
 " Show documentation
 nnoremap <silent> K :Lspsaga hover_doc<CR>
@@ -434,7 +434,14 @@ lsp_installer.on_server_ready(
             end
         }
 
-        -- (optional) Customize the options passed to the server
+        if server.name == "tsserver" then
+          opts.on_attach = function(client)
+            client.resolved_capabilities.document_formatting = false
+            client.resolved_capabilities.document_range_formatting = false
+            require("illuminate").on_attach(client)
+          end
+        end
+
         if server.name == "angularls" then
             opts.root_dir = function()
                 return root_pattern("angular.json")
@@ -442,6 +449,7 @@ lsp_installer.on_server_ready(
         end
 
         if server.name == "jsonls" then
+            opts.capabilities.textDocument.completion.completionItem.snippetSupport = true
             opts.settings = {
                 json = {
                     schemas = require("schemastore").json.schemas()
@@ -488,7 +496,7 @@ require("trouble").setup {
 local telescope = require("telescope")
 telescope.setup {
     defaults = {
-        file_ignore_patterns = {"node_modules", ".git"}
+        file_ignore_patterns = {"node_modules", "^.git$"}
     },
   pickers = {
     find_files = {
@@ -526,6 +534,18 @@ require('close_buffers').setup({
       vim.api.nvim_win_set_buf(window, bufnr)
     end
   end,
+})
+
+local nullls = require('null-ls')
+nullls.setup({
+  sources = {
+    nullls.builtins.formatting.clang_format,
+    nullls.builtins.formatting.prettierd,
+    nullls.builtins.formatting.shfmt,
+    nullls.builtins.formatting.sqlformat,
+    nullls.builtins.diagnostics.shellcheck,
+    nullls.builtins.code_actions.shellcheck,
+  }
 })
 
 require("rest-nvim").setup {}

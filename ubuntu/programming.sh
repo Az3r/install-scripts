@@ -5,8 +5,9 @@ export NVM_DIR=$HOME/.nvm
 
 # neovim and vscode as main editor
 sudo apt-get -y install snapd
-sudo snap install --edge nvim --classic
 sudo snap install code-insiders --classic
+curl -o ~/nvim.appimage -L https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x ~/nvim.appimage
 
 # vim-plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -43,8 +44,7 @@ sudo snap install dotnet-sdk --classic --edge
 sudo snap install go --edge --classic
 
 # formatter
-sudo apt-get install -y jq clang-format shellcheck
-pip3 install sqlparse
+sudo apt-get install -y jq clang-format shellcheck sqlformat
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 npm install -g prettierd
 

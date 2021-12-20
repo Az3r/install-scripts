@@ -119,6 +119,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias nvim="~/nvim.appimage"
 alias vim="nvim"
 alias lg="lazygit"
 alias python="python3"

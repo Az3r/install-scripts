@@ -108,7 +108,6 @@ tools:
   sh-shfmt: &sh-shfmt
     format-command: 'shfmt -ci -s -bn'
     format-stdin: true
-
   javascript-eslint: &javascript-eslint
     lint-command: 'eslint -f visualstudio --stdin --stdin-filename ${INPUT}'
     lint-ignore-exit-code: true
@@ -127,20 +126,8 @@ tools:
       - '%f:%l:%c:%trror - %m'
       - '%f:%l:%c:%tarning - %m'
 
-  javascript-typescript-prettier: &javascript-typescript-prettier
-    format-command: 'prettierd "${INPUT}"'
-    format-stdin: true
-
-  html-prettier: &html-prettier
-    format-command: 'prettierd "${INPUT}"'
-    format-stdin: true
-
-  css-prettier: &css-prettier
-    format-command: 'prettierd "${INPUT}"'
-    format-stdin: true
-
-  json-prettier: &json-prettier
-    format-command: 'prettierd "${INPUT}"'
+  prettier: &prettier
+    format-command: 'PRETTIERD_LOCAL_PRETTIER_ONLY=1 prettierd "${INPUT}"'
     format-stdin: true
 
   json-jq: &json-jq
@@ -216,31 +203,31 @@ languages:
 
   javascript:
     # <<: *javascript-eslint
-    - <<: *javascript-typescript-prettier
-
+    - <<: *prettier
+ 
   javascriptreact:
-    - <<: *javascript-typescript-prettier
-
+    - <<: *prettier
+ 
   typescriptreact:
-    - <<: *javascript-typescript-prettier
-
+    - <<: *prettier
+ 
   typescript:
-    - <<: *javascript-typescript-prettier
-
+    - <<: *prettier
+ 
   php:
     - <<: *php-phpstan
     - <<: *php-psalm
 
   html:
-    - <<: *html-prettier
+    - <<: *prettier
 
   css:
-    - <<: *css-prettier
+    - <<: *prettier
 
   json:
-    - <<: *json-jq
-    - <<: *json-fixjson
-    - <<: *json-prettier
+    # - <<: *json-jq
+    # - <<: *json-fixjson
+    - <<: *prettier
 
   csv:
     - <<: *csv-csvlint
