@@ -35,6 +35,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'hrsh7th/cmp-buffer'
 " end cmp plugins
+Plug 'f-person/git-blame.nvim' " provide gitblam functionality
 Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
 Plug 'RRethy/vim-illuminate' " automatically highlighting other uses of the current word under the cursor
 Plug 'sunjon/shade.nvim' " dims your inactive windows, making it easier to see the active window at a glance
@@ -279,12 +280,6 @@ nmap <leader>rr <Plug>RestNvim<CR>
 nmap <leader>rl <Plug>RestNvimLast<CR>
 nmap <leader>rp <Plug>RestNvimPreview<CR>
 
-" snippet
-imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      :'<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      :'<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      :'<S-Tab>'
-
 " testing
 let test#strategy = "dispatch"
 nnoremap <silent> <leader>tn :TestNearest<CR>
@@ -336,17 +331,12 @@ set completeopt-=longest
 let g:dashboard_default_executive ='telescope'
 let g:indentLine_fileTypeExclude = ['dashboard']
 
+" git
+let g:gitblame_enabled = 1
+
 " only available in neovim >= 5
 lua << EOF
 -- Syntax highlighting support
-local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-parser_configs.http = {
-  install_info = {
-    url = "https://github.com/NTBBloodbath/tree-sitter-http",
-    files = {"src/parser.c"},
-    branch = "main"
-  }
-}
 require "nvim-treesitter.configs".setup {
     ensure_installed = "all",
     highlight = {
@@ -374,7 +364,7 @@ cmp.setup(
             ["<C-e>"] = cmp.mapping.close(),
             ["<Tab>"] = function(fallback)
                 if cmp.visible() then
-                    -- cmp.select_next_item
+                    -- cmp.select_next_item()
                     cmp.confirm(
                         {
                             behavior = cmp.ConfirmBehavior.Insert,
@@ -384,7 +374,8 @@ cmp.setup(
                 elseif vim.fn["vsnip#available"](1) ~= 0 then
                     vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>(vsnip-expand-or-jump)", true, true, true), "")
                 else
-                    fallback()
+                    -- fallback()
+                    vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>(Tabout)", true, true, true), "")
                 end
             end,
             ["<S-Tab>"] = function(fallback)
@@ -434,7 +425,7 @@ lsp_installer.on_server_ready(
             end
         }
 
-        if server.name == "tsserver" then
+        if server.name == "tsserver" or server.name == "jsonls" then
           opts.on_attach = function(client)
             client.resolved_capabilities.document_formatting = false
             client.resolved_capabilities.document_range_formatting = false
@@ -496,7 +487,7 @@ require("trouble").setup {
 local telescope = require("telescope")
 telescope.setup {
     defaults = {
-        file_ignore_patterns = {"node_modules", "^.git$"}
+        file_ignore_patterns = {"node_modules"}
     },
   pickers = {
     find_files = {
@@ -539,7 +530,8 @@ require('close_buffers').setup({
 local nullls = require('null-ls')
 nullls.setup({
   sources = {
-    nullls.builtins.formatting.clang_format,
+    -- nullls.builtins.formatting.yapf,
+    -- nullls.builtins.formatting.clang_format,
     nullls.builtins.formatting.prettierd,
     nullls.builtins.formatting.shfmt,
     nullls.builtins.formatting.sqlformat,

@@ -19,6 +19,7 @@ git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvi
 # node version manager
 sudo apt-get remove nodejs -y
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+nvm install --lts
 
 # rust
 sudo apt-get install -y libssl-dev pkg-config
@@ -44,7 +45,7 @@ sudo snap install dotnet-sdk --classic --edge
 sudo snap install go --edge --classic
 
 # formatter
-sudo apt-get install -y jq clang-format shellcheck sqlformat
+sudo apt-get install -y clang-format shellcheck sqlformat
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 npm install -g prettierd
 
