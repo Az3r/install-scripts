@@ -23,7 +23,7 @@ nvm install --lts
 
 # rust
 sudo apt-get install -y libssl-dev pkg-config
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 rustup default nightly
 cargo install cargo-edit
 
