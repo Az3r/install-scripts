@@ -12,7 +12,7 @@ git config --global init.defaultBranch main
 git config --global diff.tool vimdiff
 
 # Microsoft efi boot (incase you stored boot directory in the same drive where this OS is installed)
-sudo cp -r ./Microsoft /boot/efi/EFI/
+# sudo cp -r ./Microsoft /boot/efi/EFI/
 
 # generate ssh for github
 ssh-keygen -t ed25519 -C "azerproject@gmail.com"
