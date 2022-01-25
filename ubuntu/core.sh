@@ -20,7 +20,6 @@ sudo apt-get -y install zsh
 sh 0>/dev/null -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 git clone https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-# chsh -s "$(which zsh)" # set to default shell
 
 # terminal emulator
 sudo apt-get -y install guake                          # dropdown terminal

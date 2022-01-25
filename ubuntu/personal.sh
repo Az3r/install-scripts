@@ -10,6 +10,7 @@ git config --global pull.ff only
 git config --global mergetool.keepBackup false
 git config --global init.defaultBranch main
 git config --global diff.tool vimdiff
+git config --global core.editor vim
 
 # Microsoft efi boot (incase you stored boot directory in the same drive where this OS is installed)
 # sudo cp -r ./Microsoft /boot/efi/EFI/

@@ -41,9 +41,13 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
       POSTGRES_DB: personal
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      VIRTUAL_HOST: pgadmin.localhost
+      PGADMIN_DEFAULT_EMAIL: root@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: root
   adminer:
     image: adminer
-    ports:
-      - 9090:8080
     environment:
       VIRTUAL_HOST: adminer.localhost

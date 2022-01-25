@@ -2,8 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/azer/.oh-my-zsh"
-export NVM_DIR="$HOME/.nvm"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -70,14 +69,11 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git gitignore npm dotnet web-search tmux
-        docker nvm docker-compose mvn
+        docker docker-compose asdf
         zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-source $NVM_DIR/nvm.sh
-
-export VISUAL=nvim
-export EDITOR=nvim
+source ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh
 
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk/
 export ANDROID_HOME=$ANDROID_SDK_ROOT
@@ -91,7 +87,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export NODE_PATH="$(which node)"
 export NPM_PATH="$(which npm)"
 
+export GOROOT=$HOME/.go 
 export GOPATH=$HOME/go
+
 export FLUTTER_SDK=$HOME/.flutter
 
 # comment out one of these below
@@ -119,11 +117,9 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias nvim="~/nvim.appimage"
-alias vim="nvim"
 alias lg="lazygit"
-alias python="python3"
 alias pip="pip3"
+alias python="python3"
 alias code="code-insiders"
 
 path+=$ANDROID_SDK_ROOT/emulator 
@@ -133,9 +129,13 @@ path+=$ANDROID_SDK_ROOT/platform-tools
 path+=$GEM_HOME/bin
 path+=$DENO_INSTALL/bin
 path+=$HOME/.local/bin
-path+="$GOPATH/bin"
-path+=/usr/local/go/bin 
-path+=$HOME/.dotnet/tools
+path+="$GOROOT/bin" 
+path+=$GOPATH/bin 
 path+=/opt/mssql-tools/bin
 path+=$HOME/.cargo/bin
 path+="$FLUTTER_SDK/bin"
+# GoLang
+export GOROOT=/home/azer/.go
+export PATH=$GOROOT/bin:$PATH
+export GOPATH=/home/azer/go
+export PATH=$GOPATH/bin:$PATH

@@ -1,7 +1,9 @@
 call plug#begin('~/.vim/plugged')
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'neovim/nvim-lspconfig' " neovim native language server support
-Plug 'tami5/lspsaga.nvim' " provide code action
+Plug 'stevearc/dressing.nvim' " improve neovim ui
+Plug 'rmagatti/goto-preview' " previewing native LSP's goto definition calls in floating windows.
+Plug 'numToStr/FTerm.nvim' " floating terminal
 Plug 'williamboman/nvim-lsp-installer' " language server installer
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
@@ -14,17 +16,18 @@ Plug 'kristijanhusak/vim-dadbod-ui' " an UI for vim-dadbod
 Plug 'vim-test/vim-test' " A Vim wrapper for running tests on different granularities
 Plug 'tpope/vim-dispatch' " kicks off tests asynchronously
 Plug 'mfussenegger/nvim-jdtls' " tools for java development
-Plug 'fatih/gomodifytags' " add/remove tags for go's structs"
+Plug 'ray-x/go.nvim' " add/remove tags for go's structs and many more
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  } " markdown-preview
 Plug 'NTBBloodbath/rest.nvim' " working with REST
-Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' } " colorize colornames and hexcode
+Plug 'norcalli/nvim-colorizer.lua' " colorize colornames and hexcode
 Plug 'b0o/SchemaStore.nvim' " providing access to the SchemaStore catalog
 Plug 'tpope/vim-dotenv' " support for .env
+Plug 'folke/lua-dev.nvim' " Dev setup for init.lua and plugin development 
 " begin snippets
 Plug 'hrsh7th/vim-vsnip' " vscode's snippet feature in vim.
 Plug 'hrsh7th/vim-vsnip-integ'
-"Plug 'rafamadriz/friendly-snippets' " preconfigured snippets for lots of programming language
-Plug 'dsznajder/vscode-es7-javascript-react-snippets' "ES7 React/Redux/GraphQL/React-Native snippets
+Plug 'xabikos/vscode-react' " react snippet
+Plug 'xabikos/vscode-javascript' "javascript snippet
 Plug 'Alexisvt/flutter-snippets' " Flutter widget snippets
 Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
 " end snippets
@@ -34,11 +37,15 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
 " end cmp plugins
+Plug 'rcarriga/nvim-notify' " notification window
+Plug 'folke/zen-mode.nvim' " distraction-free
+Plug 'simrat39/symbols-outline.nvim' " tree view for symbols
+Plug 'sindrets/diffview.nvim' " Single tabpage interface for easily cycling through diffs for any git rev
+Plug 'beauwilliams/focus.nvim' " Window Management Enhancements for Neovim
 Plug 'f-person/git-blame.nvim' " provide gitblam functionality
 Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
-Plug 'RRethy/vim-illuminate' " automatically highlighting other uses of the current word under the cursor
-Plug 'sunjon/shade.nvim' " dims your inactive windows, making it easier to see the active window at a glance
 Plug 'glepnir/dashboard-nvim' " dashboard
 Plug 'akinsho/bufferline.nvim' " display buffers on top
 Plug 'kazhala/close-buffers.nvim' " quickly delete multiple buffers, work with bufferline
@@ -52,6 +59,7 @@ Plug 'windwp/nvim-autopairs' " auto close parentheses and more
 Plug 'windwp/nvim-ts-autotag' " auto tag like <div></div>
 Plug 'dracula/vim' " dracular theme
 Plug 'projekt0n/github-nvim-theme' " github theme
+Plug 'rebelot/kanagawa.nvim' " kanagawa theme
 Plug 'tversteeg/registers.nvim' " registers manager
 Plug 'abecodes/tabout.nvim' " tab you out of bracket
 Plug 'mg979/vim-visual-multi'
@@ -109,17 +117,11 @@ set backspace=indent,eol,start
 set mps+=<:> " use % to jump between pairs
 
 " source file
-nnoremap <F12> :source %<CR>
+nnoremap <silent> <F12> :source %<CR>
 
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
-
-" Navigate between screens
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
 
 " Allow hidden buffers
 set hidden
@@ -143,7 +145,8 @@ set splitbelow
 
 " colorscheme
 set termguicolors
-colorscheme github_dark_default
+" colorscheme github_dark_default
+colorscheme kanagawa
 
 " closetags
 let g:closetag_filenames = '*.js, *.jsx, *.ts, *.tsx'
@@ -155,8 +158,8 @@ nmap ? :noh<CR>
 " Find files using Telescope command-line sugar.
 nnoremap <space>f <cmd>Telescope find_files<cr>
 " search for symbols
-nnoremap <silent> <space>a :Telescope lsp_document_symbols<CR>
-nnoremap <silent> <space>w :Telescope lsp_workspace_symbols<CR>
+nnoremap <silent> <space>s :Telescope lsp_document_symbols<CR>
+nnoremap <silent> <space>w :Telescope lsp_workspace_symbols
 " search anything in workspace
 nnoremap <silent> <space>l <cmd>Telescope live_grep<cr>
 " search current open buffers
@@ -167,8 +170,10 @@ nnoremap <space>h <cmd>Telescope help_tags<cr>
 
 " Files explorer
 let g:nvim_tree_width = 40
-nnoremap <space>e :NvimTreeToggle<CR>
-nnoremap <space>r :NvimTreeRefresh<CR>
+nnoremap <space>e :NvimTreeFindFileToggle<CR>
+
+" Symbols outline
+nnoremap <space>o :SymbolsOutline<CR>
 
 " copy and paste from clipboard
 vnoremap <leader>c "+y
@@ -192,13 +197,12 @@ nnoremap <a-k> :BufferLineCycleNext<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>a :wa<CR>
 nnoremap <a-w> :BDelete this<CR>
-nnoremap <a-a> :BWipeout all<CR>
-nnoremap <a-o> :BWipeout other<CR>
+nnoremap <a-a> :BWipeout hidden<CR>
 nnoremap <a-q> :q<CR>
 
 
 " Vimux
-let g:VimuxHeight = '35'
+let g:VimuxHeight = '40'
 let g:VimuxOrientation = 'h'
 nnoremap <silent> <space><space> :VimuxPromptCommand<CR>
 nnoremap <silent> <space>vz :VimuxZoomRunner<CR>
@@ -210,7 +214,10 @@ nnoremap <silent> <space>vl :VimuxRunLastCommand<CR>
 nnoremap <silent> <space>vr :VimuxClearTerminalScreen<CR>
 
 " split screen
-nnoremap <silent>\\ :vsplit<CR>
+nnoremap <silent> \\ :FocusSplitNicely<CR>
+nnoremap <silent> <c-k> :FocusSplitCycle<CR>
+nnoremap <silent> <c-j> :FocusSplitCycle reverse<CR>
+
 " resize
 nnoremap <silent> = :vertical resize +5<CR>
 nnoremap <silent> - :vertical resize -5<CR>
@@ -222,36 +229,32 @@ nnoremap <leader>ss :DBUIToggle<CR>
 
 " formatting
 autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()
-nnoremap <silent> <space>s <cmd>lua vim.lsp.buf.formatting_sync()<CR>
+nnoremap <silent> ;f <cmd>lua vim.lsp.buf.formatting_sync()<CR>
 
 " Show documentation
-nnoremap <silent> K :Lspsaga hover_doc<CR>
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 " Signature help
-nnoremap <silent> gs :Lspsaga signature_help<CR>
+nnoremap <silent> gs <cmd>lua vim.lsp.buf.signature_help()<CR>
 " Jump to definition
-nnoremap <silent> gd <Cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gD :vsplit<CR><Cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gds :FocusSplitNicely<CR><cmd>lua vim.lsp.buf.definition()<CR>
 " Preview definition
-nnoremap <silent> gp :Lspsaga preview_definition<CR>
+nnoremap <silent> gp <cmd>lua require('goto-preview').goto_preview_definition()<CR>
 " Find word Reference
-nnoremap <silent> gh :Lspsaga lsp_finder<CR>
-" Open code action
-nnoremap <silent><leader>ca :Lspsaga code_action<CR>
-vnoremap <silent><leader> :<C-U>Lspsaga range_code_action<CR>
+nnoremap <silent> gh <cmd>lua require('goto-preview').goto_preview_references()<CR>
+" Code action
+nnoremap <silent> <leader>ca <cmd>lua vim.lsp.buf.code_action()<CR>
+vnoremap <silent> <leader>ca <cmd>lua vim.lsp.buf.range_code_action()<CR>
 " Rename
-nnoremap <silent>gr :Lspsaga rename<CR>
-nnoremap <silent><F2> :Lspsaga rename<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.rename()<CR>
 " FLoat terminal
-nnoremap <silent> ;t :Lspsaga open_floaterm<CR>
-tmap <silent> <a-q> jj:Lspsaga close_floaterm<CR>
-nnoremap <silent> ;T :Lspsaga close_floaterm<CR>
+nnoremap <silent> ;t <cmd>lua require("FTerm").toggle()<CR>
+tnoremap <silent> <a-q> <C-\><C-n><cmd>lua require("FTerm").toggle()<CR>
 " Jump to diagnostics
-nnoremap <silent> ]g :Lspsaga diagnostic_jump_next<CR>
-nnoremap <silent> [g :Lspsaga diagnostic_jump_prev<CR>
+nnoremap <silent> ]g <cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> [g <cmd>lua vim.diagnostic.goto_prev()<CR>
 " Show diagnostics
-nnoremap <silent> <space>d :Lspsaga show_cursor_diagnostics<CR>
+nnoremap <silent> <space>d vim.lsp.diagnostic.show_line_diagnostics()
 
 " more diagnostic options from trouble.nvim
 nnoremap <space>tt <cmd>TroubleToggle<cr>
@@ -281,12 +284,11 @@ nmap <leader>rl <Plug>RestNvimLast<CR>
 nmap <leader>rp <Plug>RestNvimPreview<CR>
 
 " testing
-let test#strategy = "dispatch"
+let test#strategy = "vimux"
+nnoremap <silent> <leader>tt :TestNearest -strategy=dispatch_background<CR>
 nnoremap <silent> <leader>tn :TestNearest<CR>
-nnoremap <silent> <leader>tf :TestFile<CR>
-nnoremap <silent> <leader>ts :TestSuite<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
-nnoremap <silent> <leader>tv :TestVisit<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
 
 " markdown
 nnoremap <leader>mp :MarkdownPreview<CR>
@@ -299,29 +301,11 @@ nmap <expr> F reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_F" : "
 nmap <expr> t reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_t" : "t"
 nmap <expr> T reg_recording() . reg_executing() == "" ? "<Plug>Lightspeed_T" : "T"
 
-" illuminate
-let g:Illuminate_delay = 300 " in milliseconds
-let g:Illuminate_ftblacklist = ['nerdtree', 'dashboard', 'NvimTree']
-nnoremap <silent> <a-n> <cmd>lua require"illuminate".next_reference{wrap=true}<cr>
-nnoremap <silent> <a-p> <cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>
-
 " Fix auto-indentation for YAML files
 augroup yaml_fix
   autocmd!
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:>
 augroup END
-
-" colorize (hexokinase)
-let g:Hexokinase_optInPatterns = [
-      \  'full_hex',
-      \  'triple_hex',
-      \  'rgb',
-      \  'rgba',
-      \  'hsl',
-      \  'hsla',
-      \  'colour_names'
-      \]
-let g:Hexokinase_ftEnabled = ['sass', 'css', 'html', 'javascript', 'typescript']
 
 " auto completion
 autocmd FileType sql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
@@ -332,7 +316,9 @@ let g:dashboard_default_executive ='telescope'
 let g:indentLine_fileTypeExclude = ['dashboard']
 
 " git
-let g:gitblame_enabled = 1
+let g:gitblame_enabled = 0
+
+nnoremap <silent> ;f :ZenMode<CR>
 
 " only available in neovim >= 5
 lua << EOF
@@ -397,6 +383,7 @@ cmp.setup(
         sources = {
             {name = "nvim_lsp"},
             {name = "vsnip"},
+            {name = "path"},
             {name = "buffer"}
         },
         formatting = {
@@ -409,6 +396,7 @@ cmp.setup(
         }
     }
 )
+
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
@@ -420,16 +408,12 @@ lsp_installer.on_server_ready(
     function(server)
         local opts = {
             capabilities = capabilities,
-            on_attach = function(client)
-                require("illuminate").on_attach(client)
-            end
         }
 
         if server.name == "tsserver" or server.name == "jsonls" then
-          opts.on_attach = function(client)
+          opts.on_attach = function(client, bufnr)
             client.resolved_capabilities.document_formatting = false
             client.resolved_capabilities.document_range_formatting = false
-            require("illuminate").on_attach(client)
           end
         end
 
@@ -448,8 +432,13 @@ lsp_installer.on_server_ready(
             }
         end
 
+        if server.name == "sumneko_lua" then
+          opts = require("lua-dev").setup({})
+        end
+
         -- This setup() function is exactly the same as lspconfig's setup function.
         -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
         server:setup(opts)
     end
 )
@@ -473,9 +462,6 @@ require("lualine").setup {
         theme = "github"
     }
 }
-
-local saga = require("lspsaga")
-saga.init_lsp_saga()
 
 require("trouble").setup {
     position = "right",
@@ -504,11 +490,6 @@ require "nvim-tree".setup {
     }
 }
 
-require'shade'.setup({
-  overlay_opacity = 50,
-  opacity_step = 1,
-})
-
 require("bufferline").setup {
   options = {
     numbers = "buffer_id"
@@ -516,7 +497,7 @@ require("bufferline").setup {
 }
 
 require('close_buffers').setup({
-  preserve_window_layout = { 'this' },
+  preserve_window_layout = { 'this', 'hidden' },
   next_buffer_cmd = function(windows)
     require('bufferline').cycle(1)
     local bufnr = vim.api.nvim_get_current_buf()
@@ -530,8 +511,9 @@ require('close_buffers').setup({
 local nullls = require('null-ls')
 nullls.setup({
   sources = {
-    -- nullls.builtins.formatting.yapf,
-    -- nullls.builtins.formatting.clang_format,
+    nullls.builtins.formatting.clang_format,
+    nullls.builtins.formatting.black,
+    nullls.builtins.diagnostics.mypy,
     nullls.builtins.formatting.prettierd,
     nullls.builtins.formatting.shfmt,
     nullls.builtins.formatting.sqlformat,
@@ -545,4 +527,21 @@ require("nvim-ts-autotag").setup {}
 require("nvim-autopairs").setup {}
 require("gitsigns").setup {}
 require('tabout').setup{}
+require'colorizer'.setup()
+require("focus").setup({
+  excluded_filetypes = { 'fterm', 'term', 'DiffviewFiles' },
+})
+require'diffview'.setup()
+require("zen-mode").setup{}
+
+-- SymbolsOutline
+vim.g.symbols_outline = {
+  highlight_hovered_item = false
+}
+
+vim.notify = require("notify")
+require('go').setup()
+require('dressing').setup()
+require('goto-preview').setup{}
+
 EOF
