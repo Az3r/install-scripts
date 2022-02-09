@@ -11,8 +11,6 @@ Plug 'nvim-telescope/telescope.nvim' " finder
 Plug 'kyazdani42/nvim-tree.lua' " file explorer
 Plug 'onsails/lspkind-nvim' " display the fancy icons to completion-menu
 Plug 'lukas-reineke/indent-blankline.nvim' " indentation guides
-Plug 'tpope/vim-dadbod' " interact with databases
-Plug 'kristijanhusak/vim-dadbod-ui' " an UI for vim-dadbod
 Plug 'vim-test/vim-test' " A Vim wrapper for running tests on different granularities
 Plug 'tpope/vim-dispatch' " kicks off tests asynchronously
 Plug 'mfussenegger/nvim-jdtls' " tools for java development
@@ -22,11 +20,9 @@ Plug 'NTBBloodbath/rest.nvim' " working with REST
 Plug 'norcalli/nvim-colorizer.lua' " colorize colornames and hexcode
 Plug 'b0o/SchemaStore.nvim' " providing access to the SchemaStore catalog
 Plug 'tpope/vim-dotenv' " support for .env
-Plug 'folke/lua-dev.nvim' " Dev setup for init.lua and plugin development 
+Plug 'folke/lua-dev.nvim' " Dev setup for init.lua and plugin development
 " begin snippets
 Plug 'hrsh7th/vim-vsnip' " vscode's snippet feature in vim.
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'xabikos/vscode-react' " react snippet
 Plug 'xabikos/vscode-javascript' "javascript snippet
 Plug 'Alexisvt/flutter-snippets' " Flutter widget snippets
 Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
@@ -35,16 +31,15 @@ Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 " end cmp plugins
+Plug 'folke/todo-comments.nvim'
 Plug 'rcarriga/nvim-notify' " notification window
 Plug 'folke/zen-mode.nvim' " distraction-free
-Plug 'simrat39/symbols-outline.nvim' " tree view for symbols
 Plug 'sindrets/diffview.nvim' " Single tabpage interface for easily cycling through diffs for any git rev
 Plug 'beauwilliams/focus.nvim' " Window Management Enhancements for Neovim
-Plug 'f-person/git-blame.nvim' " provide gitblam functionality
+Plug 'f-person/git-blame.nvim' " provide gitblame functionality
 Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
 Plug 'glepnir/dashboard-nvim' " dashboard
 Plug 'akinsho/bufferline.nvim' " display buffers on top
@@ -55,15 +50,14 @@ Plug 'tpope/vim-repeat' " repeat command
 Plug 'folke/trouble.nvim' " provide all kind of diagnostics
 Plug 'akinsho/flutter-tools.nvim' " addtional tools for flutter
 Plug 'lewis6991/gitsigns.nvim' " git decoration
-Plug 'windwp/nvim-autopairs' " auto close parentheses and more
+Plug 'steelsojka/pears.nvim' " auto close parentheses and more
 Plug 'windwp/nvim-ts-autotag' " auto tag like <div></div>
 Plug 'dracula/vim' " dracular theme
 Plug 'projekt0n/github-nvim-theme' " github theme
 Plug 'rebelot/kanagawa.nvim' " kanagawa theme
-Plug 'tversteeg/registers.nvim' " registers manager
+" Plug 'tversteeg/registers.nvim' " registers manager
 Plug 'abecodes/tabout.nvim' " tab you out of bracket
 Plug 'mg979/vim-visual-multi'
-Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-abolish'
@@ -118,7 +112,6 @@ set mps+=<:> " use % to jump between pairs
 
 " source file
 nnoremap <silent> <F12> :source %<CR>
-
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
@@ -176,10 +169,10 @@ nnoremap <space>e :NvimTreeFindFileToggle<CR>
 nnoremap <space>o :SymbolsOutline<CR>
 
 " copy and paste from clipboard
-vnoremap <leader>c "+y
-vnoremap <leader>v "+p
-nnoremap <leader>v "+p
-inoremap <C-v> <C-r>+
+vnoremap <silent> <leader>c "+y
+vnoremap <silent> <leader>v "+p
+nnoremap <silent> <leader>v "+p
+inoremap <silent> <C-v> <C-r>+
 
 " stop insert mode
 inoremap jj <ESC>
@@ -224,12 +217,8 @@ nnoremap <silent> - :vertical resize -5<CR>
 nnoremap <silent> + :resize +5<CR>
 nnoremap <silent> _ :resize -5<CR>
 
-" vim-dadbod
-nnoremap <leader>ss :DBUIToggle<CR>
-
 " formatting
 autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()
-nnoremap <silent> ;f <cmd>lua vim.lsp.buf.formatting_sync()<CR>
 
 " Show documentation
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
@@ -308,7 +297,6 @@ augroup yaml_fix
 augroup END
 
 " auto completion
-autocmd FileType sql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
 set completeopt-=longest
 
 " dashboard
@@ -335,9 +323,7 @@ require "nvim-treesitter.configs".setup {
 
 -- completion
 -- If you want to insert `(` after select function or method item
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local cmp = require "cmp"
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({map_char = {tex = ""}}))
 cmp.setup(
     {
         snippet = {
@@ -410,7 +396,7 @@ lsp_installer.on_server_ready(
             capabilities = capabilities,
         }
 
-        if server.name == "tsserver" or server.name == "jsonls" then
+        if server.name == "tsserver" or server.name == "jsonls" or server.name == "stylelint_lsp" then
           opts.on_attach = function(client, bufnr)
             client.resolved_capabilities.document_formatting = false
             client.resolved_capabilities.document_range_formatting = false
@@ -421,6 +407,10 @@ lsp_installer.on_server_ready(
             opts.root_dir = function()
                 return root_pattern("angular.json")
             end
+        end
+
+        if server.name == "cssmodules_ls" then
+          opts.filetypes = {"javascriptreact", "typescriptreact"}
         end
 
         if server.name == "jsonls" then
@@ -516,7 +506,6 @@ nullls.setup({
     nullls.builtins.diagnostics.mypy,
     nullls.builtins.formatting.prettierd,
     nullls.builtins.formatting.shfmt,
-    nullls.builtins.formatting.sqlformat,
     nullls.builtins.diagnostics.shellcheck,
     nullls.builtins.code_actions.shellcheck,
   }
@@ -524,7 +513,7 @@ nullls.setup({
 
 require("rest-nvim").setup {}
 require("nvim-ts-autotag").setup {}
-require("nvim-autopairs").setup {}
+require("pears").setup()
 require("gitsigns").setup {}
 require('tabout').setup{}
 require'colorizer'.setup()
@@ -534,14 +523,9 @@ require("focus").setup({
 require'diffview'.setup()
 require("zen-mode").setup{}
 
--- SymbolsOutline
-vim.g.symbols_outline = {
-  highlight_hovered_item = false
-}
-
 vim.notify = require("notify")
 require('go').setup()
-require('dressing').setup()
+require('dressing').setup{}
 require('goto-preview').setup{}
-
+require('todo-comments').setup{}
 EOF
