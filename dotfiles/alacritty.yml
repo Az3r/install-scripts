@@ -4,14 +4,14 @@
 # environment variables. Some entries may override variables
 # set by alacritty it self.
 # env:
-  # TERM env customization.
-  #
-  # If this property is not set, alacritty will set it to xterm-256color.
-  #
-  # Note that some xterm terminfo databases don't declare support for italics.
-  # You can verify this by checking for the presence of `smso` and `sitm` in
-  # `infocmp xterm-256color`.
-  # TERM: xterm-256color-italic
+# TERM env customization.
+#
+# If this property is not set, alacritty will set it to xterm-256color.
+#
+# Note that some xterm terminfo databases don't declare support for italics.
+# You can verify this by checking for the presence of `smso` and `sitm` in
+# `infocmp xterm-256color`.
+# TERM: xterm-256color-italic
 
 window:
   # Window dimensions (changes require restart)
@@ -28,7 +28,7 @@ window:
   # DPI and the specified value is always added at both opposing sides.
   padding:
     x: 0
-    y: 0 
+    y: 0
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
@@ -52,6 +52,7 @@ window:
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
   startup_mode: fullscreen
+  opacity: 1.0
 
 scrolling:
   # maximum number of lines in the scrollback buffer. Specifying '0' will
@@ -132,34 +133,34 @@ custom_cursor_colors: true
 colors:
   # Default colors
   primary:
-    background: '0x0d1117'
-    foreground: '0xb3b1ad'
+    background: "0x0d1117"
+    foreground: "0xb3b1ad"
 
   # Normal colors
   normal:
-    black:   '0x484f58'
-    red:     '0xff7b72'
-    green:   '0x3fb950'
-    yellow:  '0xd29922'
-    blue:    '0x58a6ff'
-    magenta: '0xbc8cff'
-    cyan:    '0x39c5cf'
-    white:   '0xb3b1ad'
+    black: "0x484f58"
+    red: "0xff7b72"
+    green: "0x3fb950"
+    yellow: "0xd29922"
+    blue: "0x58a6ff"
+    magenta: "0xbc8cff"
+    cyan: "0x39c5cf"
+    white: "0xb3b1ad"
 
   # Bright colors
   bright:
-    black:   '0x6e7681'
-    red:     '0xffa198'
-    green:   '0x56d364'
-    yellow:  '0xe3b341'
-    blue:    '0x79c0ff'
-    magenta: '0xd2a8ff'
-    cyan:    '0x39c5cf'
-    white:   '0xb3b1ad'
+    black: "0x6e7681"
+    red: "0xffa198"
+    green: "0x56d364"
+    yellow: "0xe3b341"
+    blue: "0x79c0ff"
+    magenta: "0xd2a8ff"
+    cyan: "0x39c5cf"
+    white: "0xb3b1ad"
 
   indexed_colors:
-    - { index: 16, color: '0xd18616' }
-    - { index: 17, color: '0xffa198' }
+    - { index: 16, color: "0xd18616" }
+    - { index: 17, color: "0xffa198" }
 
 # Visual Bell
 #
@@ -185,11 +186,8 @@ colors:
 #
 bell:
   animation: EaseOutExpo
-  color: '0xffffff'
+  color: "0xffffff"
   duration: 0
-
-# Background opacity
-background_opacity: 1.0
 
 # Key bindings
 #
@@ -285,71 +283,71 @@ background_opacity: 1.0
 #   - AppKeypad
 #
 key_bindings:
-  - { key: V,        mods: Command,       action: Paste                        }
-  - { key: C,        mods: Command,       action: Copy                         }
-  - { key: Q,        mods: Command,       action: Quit                         }
-  - { key: N,        mods: Command,       action: SpawnNewInstance             }
-  - { key: Return,   mods: Command,       action: ToggleFullscreen             }
+  - { key: V, mods: Command, action: Paste }
+  - { key: C, mods: Command, action: Copy }
+  - { key: Q, mods: Command, action: Quit }
+  - { key: N, mods: Command, action: SpawnNewInstance }
+  - { key: Return, mods: Command, action: ToggleFullscreen }
 
-  - { key: Home,                          chars: "\x1bOH",   mode: AppCursor   }
-  - { key: Home,                          chars: "\x1b[H",   mode: ~AppCursor  }
-  - { key: End,                           chars: "\x1bOF",   mode: AppCursor   }
-  - { key: End,                           chars: "\x1b[F",   mode: ~AppCursor  }
-  - { key: Equals,   mods: Command,       action: IncreaseFontSize             }
-  - { key: Minus,    mods: Command,       action: DecreaseFontSize             }
-  - { key: Minus,    mods: Command|Shift, action: ResetFontSize                }
-  - { key: PageUp,   mods: Shift,         chars: "\x1b[5;2~"                   }
-  - { key: PageUp,   mods: Control,       chars: "\x1b[5;5~"                   }
-  - { key: PageUp,                        chars: "\x1b[5~"                     }
-  - { key: PageDown, mods: Shift,         chars: "\x1b[6;2~"                   }
-  - { key: PageDown, mods: Control,       chars: "\x1b[6;5~"                   }
-  - { key: PageDown,                      chars: "\x1b[6~"                     }
-  - { key: Left,     mods: Shift,         chars: "\x1b[1;2D"                   }
-  - { key: Left,     mods: Control,       chars: "\x1b[1;5D"                   }
-  - { key: Left,     mods: Alt,           chars: "\x1b[1;3D"                   }
-  - { key: Left,                          chars: "\x1b[D",   mode: ~AppCursor  }
-  - { key: Left,                          chars: "\x1bOD",   mode: AppCursor   }
-  - { key: Right,    mods: Shift,         chars: "\x1b[1;2C"                   }
-  - { key: Right,    mods: Control,       chars: "\x1b[1;5C"                   }
-  - { key: Right,    mods: Alt,           chars: "\x1b[1;3C"                   }
-  - { key: Right,                         chars: "\x1b[C",   mode: ~AppCursor  }
-  - { key: Right,                         chars: "\x1bOC",   mode: AppCursor   }
-  - { key: Up,       mods: Shift,         chars: "\x1b[1;2A"                   }
-  - { key: Up,       mods: Control,       chars: "\x1b[1;5A"                   }
-  - { key: Up,       mods: Alt,           chars: "\x1b[1;3A"                   }
-  - { key: Up,                            chars: "\x1b[A",   mode: ~AppCursor  }
-  - { key: Up,                            chars: "\x1bOA",   mode: AppCursor   }
-  - { key: Down,     mods: Shift,         chars: "\x1b[1;2B"                   }
-  - { key: Down,     mods: Control,       chars: "\x1b[1;5B"                   }
-  - { key: Down,     mods: Alt,           chars: "\x1b[1;3B"                   }
-  - { key: Down,                          chars: "\x1b[B",   mode: ~AppCursor  }
-  - { key: Down,                          chars: "\x1bOB",   mode: AppCursor   }
-  - { key: Tab,      mods: Shift,         chars: "\x1b[Z"                      }
-  - { key: F1,                            chars: "\x1bOP"                      }
-  - { key: F2,                            chars: "\x1bOQ"                      }
-  - { key: F3,                            chars: "\x1bOR"                      }
-  - { key: F4,                            chars: "\x1bOS"                      }
-  - { key: F5,                            chars: "\x1b[15~"                    }
-  - { key: F6,                            chars: "\x1b[17~"                    }
-  - { key: F7,                            chars: "\x1b[18~"                    }
-  - { key: F8,                            chars: "\x1b[19~"                    }
-  - { key: F9,                            chars: "\x1b[20~"                    }
-  - { key: F10,                           chars: "\x1b[21~"                    }
-  - { key: F11,                           chars: "\x1b[23~"                    }
-  - { key: F12,                           chars: "\x1b[24~"                    }
-  - { key: Back,                          chars: "\x7f"                        }
-  - { key: Back,     mods: Alt,           chars: "\x1b\x7f"                    }
-  - { key: Insert,                        chars: "\x1b[2~"                     }
-  - { key: Delete,                        chars: "\x1b[3~"                     }
+  - { key: Home, chars: "\x1bOH", mode: AppCursor }
+  - { key: Home, chars: "\x1b[H", mode: ~AppCursor }
+  - { key: End, chars: "\x1bOF", mode: AppCursor }
+  - { key: End, chars: "\x1b[F", mode: ~AppCursor }
+  - { key: Equals, mods: Command, action: IncreaseFontSize }
+  - { key: Minus, mods: Command, action: DecreaseFontSize }
+  - { key: Minus, mods: Command|Shift, action: ResetFontSize }
+  - { key: PageUp, mods: Shift, chars: "\x1b[5;2~" }
+  - { key: PageUp, mods: Control, chars: "\x1b[5;5~" }
+  - { key: PageUp, chars: "\x1b[5~" }
+  - { key: PageDown, mods: Shift, chars: "\x1b[6;2~" }
+  - { key: PageDown, mods: Control, chars: "\x1b[6;5~" }
+  - { key: PageDown, chars: "\x1b[6~" }
+  - { key: Left, mods: Shift, chars: "\x1b[1;2D" }
+  - { key: Left, mods: Control, chars: "\x1b[1;5D" }
+  - { key: Left, mods: Alt, chars: "\x1b[1;3D" }
+  - { key: Left, chars: "\x1b[D", mode: ~AppCursor }
+  - { key: Left, chars: "\x1bOD", mode: AppCursor }
+  - { key: Right, mods: Shift, chars: "\x1b[1;2C" }
+  - { key: Right, mods: Control, chars: "\x1b[1;5C" }
+  - { key: Right, mods: Alt, chars: "\x1b[1;3C" }
+  - { key: Right, chars: "\x1b[C", mode: ~AppCursor }
+  - { key: Right, chars: "\x1bOC", mode: AppCursor }
+  - { key: Up, mods: Shift, chars: "\x1b[1;2A" }
+  - { key: Up, mods: Control, chars: "\x1b[1;5A" }
+  - { key: Up, mods: Alt, chars: "\x1b[1;3A" }
+  - { key: Up, chars: "\x1b[A", mode: ~AppCursor }
+  - { key: Up, chars: "\x1bOA", mode: AppCursor }
+  - { key: Down, mods: Shift, chars: "\x1b[1;2B" }
+  - { key: Down, mods: Control, chars: "\x1b[1;5B" }
+  - { key: Down, mods: Alt, chars: "\x1b[1;3B" }
+  - { key: Down, chars: "\x1b[B", mode: ~AppCursor }
+  - { key: Down, chars: "\x1bOB", mode: AppCursor }
+  - { key: Tab, mods: Shift, chars: "\x1b[Z" }
+  - { key: F1, chars: "\x1bOP" }
+  - { key: F2, chars: "\x1bOQ" }
+  - { key: F3, chars: "\x1bOR" }
+  - { key: F4, chars: "\x1bOS" }
+  - { key: F5, chars: "\x1b[15~" }
+  - { key: F6, chars: "\x1b[17~" }
+  - { key: F7, chars: "\x1b[18~" }
+  - { key: F8, chars: "\x1b[19~" }
+  - { key: F9, chars: "\x1b[20~" }
+  - { key: F10, chars: "\x1b[21~" }
+  - { key: F11, chars: "\x1b[23~" }
+  - { key: F12, chars: "\x1b[24~" }
+  - { key: Back, chars: "\x7f" }
+  - { key: Back, mods: Alt, chars: "\x1b\x7f" }
+  - { key: Insert, chars: "\x1b[2~" }
+  - { key: Delete, chars: "\x1b[3~" }
 
     # shortcuts for tmux. the leader key is control-b (0x02)
-  - { key: W,        mods: Command,       chars: "\x02&"                       }  # close tab (kill)
-  - { key: T,        mods: Command,       chars: "\x02c"                       }  # new tab
-  - { key: RBracket, mods: Command|Shift, chars: "\x02n"                       }  # select next tab
-  - { key: LBracket, mods: Command|Shift, chars: "\x02p"                       }  # select previous tab
-  - { key: RBracket, mods: Command,       chars: "\x02o"                       }  # select next pane
-  - { key: LBracket, mods: Command,       chars: "\x02;"                       }  # select last (previously used) pane
-  - { key: F,        mods: Command,       chars: "\x02/"                       }  # search (upwards) (see tmux.conf)
+  - { key: W, mods: Command, chars: "\x02&" } # close tab (kill)
+  - { key: T, mods: Command, chars: "\x02c" } # new tab
+  - { key: RBracket, mods: Command|Shift, chars: "\x02n" } # select next tab
+  - { key: LBracket, mods: Command|Shift, chars: "\x02p" } # select previous tab
+  - { key: RBracket, mods: Command, chars: "\x02o" } # select next pane
+  - { key: LBracket, mods: Command, chars: "\x02;" } # select last (previously used) pane
+  - { key: F, mods: Command, chars: "\x02/" } # search (upwards) (see tmux.conf)
 
 mouse:
   # Click settings
@@ -365,25 +363,25 @@ mouse:
 
   # URL launcher
   # url:
-    # This program is executed when clicking on a text which is recognized as a URL.
-    # The URL is always added to the command as the last parameter.
-    #
-    # When set to `None`, URL launching will be disabled completely.
-    #
-    # Default:
-    #   - (macOS) open
-    #   - (Linux) xdg-open
-    #   - (Windows) explorer
-    # launcher:
-    #   program: xdg-open
-    #   args: []
+  # This program is executed when clicking on a text which is recognized as a URL.
+  # The URL is always added to the command as the last parameter.
+  #
+  # When set to `None`, URL launching will be disabled completely.
+  #
+  # Default:
+  #   - (macOS) open
+  #   - (Linux) xdg-open
+  #   - (Windows) explorer
+  # launcher:
+  #   program: xdg-open
+  #   args: []
 
-    # These are the modifiers that need to be held down for opening URLs when clicking
-    # on them. The available modifiers are documented in the key binding section.
-    # modifiers: Control|Shift
+  # These are the modifiers that need to be held down for opening URLs when clicking
+  # on them. The available modifiers are documented in the key binding section.
+  # modifiers: Control|Shift
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: false
@@ -454,5 +452,4 @@ debug:
 # Entries in shell.args are passed unmodified as arguments to the shell.
 shell:
   program: /usr/bin/zsh
-
 # vim: nospell

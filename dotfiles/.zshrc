@@ -73,7 +73,6 @@ plugins=(git gitignore npm dotnet web-search tmux
         zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh
 
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk/
 export ANDROID_HOME=$ANDROID_SDK_ROOT
@@ -90,11 +89,13 @@ export NPM_PATH="$(which npm)"
 export GOROOT=$HOME/.go 
 export GOPATH=$HOME/go
 
+export DOTNET_ROOT=/usr/share/dotnet
+
 export FLUTTER_SDK=$HOME/.flutter
 
 # comment out one of these below
 # source $(openjdk) # only if install openjdk from p, this will set JAVA_HOME for you
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 # if you install openjdk-11-jdk from apt-get and you want to develop android application
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 # if you install openjdk-11-jdk from apt-get and you want to develop android application
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -129,13 +130,10 @@ path+=$ANDROID_SDK_ROOT/platform-tools
 path+=$GEM_HOME/bin
 path+=$DENO_INSTALL/bin
 path+=$HOME/.local/bin
-path+="$GOROOT/bin" 
+path+=$GOROOT/bin
 path+=$GOPATH/bin 
 path+=/opt/mssql-tools/bin
 path+=$HOME/.cargo/bin
 path+="$FLUTTER_SDK/bin"
-# GoLang
-export GOROOT=/home/azer/.go
-export PATH=$GOROOT/bin:$PATH
-export GOPATH=/home/azer/go
-export PATH=$GOPATH/bin:$PATH
+path+=$HOME/.local/share/coursier/bin
+path+=$DOTNET_ROOT/tools

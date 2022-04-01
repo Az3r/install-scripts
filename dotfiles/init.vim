@@ -8,24 +8,19 @@ Plug 'williamboman/nvim-lsp-installer' " language server installer
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim' " finder
-Plug 'kyazdani42/nvim-tree.lua' " file explorer
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'} " File explorer
 Plug 'onsails/lspkind-nvim' " display the fancy icons to completion-menu
 Plug 'lukas-reineke/indent-blankline.nvim' " indentation guides
 Plug 'vim-test/vim-test' " A Vim wrapper for running tests on different granularities
 Plug 'tpope/vim-dispatch' " kicks off tests asynchronously
-Plug 'mfussenegger/nvim-jdtls' " tools for java development
 Plug 'ray-x/go.nvim' " add/remove tags for go's structs and many more
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  } " markdown-preview
-Plug 'NTBBloodbath/rest.nvim' " working with REST
 Plug 'norcalli/nvim-colorizer.lua' " colorize colornames and hexcode
 Plug 'b0o/SchemaStore.nvim' " providing access to the SchemaStore catalog
 Plug 'tpope/vim-dotenv' " support for .env
-Plug 'folke/lua-dev.nvim' " Dev setup for init.lua and plugin development
 " begin snippets
 Plug 'hrsh7th/vim-vsnip' " vscode's snippet feature in vim.
 Plug 'xabikos/vscode-javascript' "javascript snippet
-Plug 'Alexisvt/flutter-snippets' " Flutter widget snippets
-Plug 'Nash0x7E2/awesome-flutter-snippets' " Flutter snippets
 " end snippets
 " begin cmp plugins
 Plug 'hrsh7th/nvim-cmp'
@@ -41,14 +36,12 @@ Plug 'sindrets/diffview.nvim' " Single tabpage interface for easily cycling thro
 Plug 'beauwilliams/focus.nvim' " Window Management Enhancements for Neovim
 Plug 'f-person/git-blame.nvim' " provide gitblame functionality
 Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
-Plug 'glepnir/dashboard-nvim' " dashboard
 Plug 'akinsho/bufferline.nvim' " display buffers on top
 Plug 'kazhala/close-buffers.nvim' " quickly delete multiple buffers, work with bufferline
 Plug 'hoob3rt/lualine.nvim' " statusline
 Plug 'ggandor/lightspeed.nvim' " vim-sneak for neovim
 Plug 'tpope/vim-repeat' " repeat command
 Plug 'folke/trouble.nvim' " provide all kind of diagnostics
-Plug 'akinsho/flutter-tools.nvim' " addtional tools for flutter
 Plug 'lewis6991/gitsigns.nvim' " git decoration
 Plug 'steelsojka/pears.nvim' " auto close parentheses and more
 Plug 'windwp/nvim-ts-autotag' " auto tag like <div></div>
@@ -94,6 +87,7 @@ set timeoutlen=300
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
+set shortmess-=F
 
 " signcolumn
 set scl=yes:2
@@ -138,15 +132,14 @@ set splitbelow
 
 " colorscheme
 set termguicolors
-" colorscheme github_dark_default
-colorscheme kanagawa
+colorscheme github_dimmed
+" colorscheme kanagawa
 
 " closetags
 let g:closetag_filenames = '*.js, *.jsx, *.ts, *.tsx'
 
 " clear search highlight
 nmap <esc> :noh<CR>
-nmap ? :noh<CR>
 
 " Find files using Telescope command-line sugar.
 nnoremap <space>f <cmd>Telescope find_files<cr>
@@ -162,18 +155,15 @@ nnoremap <space>p <cmd>Telescope buffers<cr>
 nnoremap <space>h <cmd>Telescope help_tags<cr>
 
 " Files explorer
-let g:nvim_tree_width = 40
-nnoremap <space>e :NvimTreeFindFileToggle<CR>
-
-" Symbols outline
-nnoremap <space>o :SymbolsOutline<CR>
+nnoremap <silent> <space>e :CHADopen<CR>
+tnoremap <silent> <space>e <C-\><C-n>:CHADopen<CR>
 
 " copy and paste from clipboard
-vnoremap <silent> <leader>c "+y
-vnoremap <silent> <leader>v "+p
-nnoremap <silent> <leader>v "+p
-inoremap <silent> <C-v> <C-r>+
-
+vnoremap <leader>c "+y
+vnoremap <leader>v "+p
+nnoremap <leader>v "+p
+inoremap <C-v> <C-o>"+p
+"
 " stop insert mode
 inoremap jj <ESC>
 tnoremap jj <C-\><C-n>
@@ -191,7 +181,7 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>a :wa<CR>
 nnoremap <a-w> :BDelete this<CR>
 nnoremap <a-a> :BWipeout hidden<CR>
-nnoremap <a-q> :q<CR>
+nnoremap <c-w> :q<CR>
 
 
 " Vimux
@@ -219,6 +209,8 @@ nnoremap <silent> _ :resize -5<CR>
 
 " formatting
 autocmd BufWritePre * lua vim.lsp.buf.formatting_sync()
+nnoremap <silent> <leader>f <cmd>lua vim.lsp.buf.formatting_sync()<CR>
+
 
 " Show documentation
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
@@ -232,13 +224,13 @@ nnoremap <silent> gp <cmd>lua require('goto-preview').goto_preview_definition()<
 " Find word Reference
 nnoremap <silent> gh <cmd>lua require('goto-preview').goto_preview_references()<CR>
 " Code action
-nnoremap <silent> <leader>ca <cmd>lua vim.lsp.buf.code_action()<CR>
-vnoremap <silent> <leader>ca <cmd>lua vim.lsp.buf.range_code_action()<CR>
+nnoremap <silent> <space>. <cmd>lua vim.lsp.buf.code_action()<CR>
+vnoremap <silent> <space>. <cmd>lua vim.lsp.buf.range_code_action()<CR>
 " Rename
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.rename()<CR>
 " FLoat terminal
 nnoremap <silent> ;t <cmd>lua require("FTerm").toggle()<CR>
-tnoremap <silent> <a-q> <C-\><C-n><cmd>lua require("FTerm").toggle()<CR>
+tnoremap <silent> <w-q> <C-\><C-n><cmd>lua require("FTerm").toggle()<CR>
 " Jump to diagnostics
 nnoremap <silent> ]g <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [g <cmd>lua vim.diagnostic.goto_prev()<CR>
@@ -246,31 +238,7 @@ nnoremap <silent> [g <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> <space>d vim.lsp.diagnostic.show_line_diagnostics()
 
 " more diagnostic options from trouble.nvim
-nnoremap <space>tt <cmd>TroubleToggle<cr>
-nnoremap <space>tj <cmd>TroubleToggle lsp_workspace_diagnostics<cr>
-nnoremap <space>tk <cmd>TroubleToggle lsp_document_diagnostics<cr>
-nnoremap <space>tf <cmd>TroubleToggle quickfix<cr>
-nnoremap <space>tl <cmd>TroubleToggle loclist<cr>
-nnoremap <space>tr <cmd>TroubleToggle lsp_references<cr>
-
-" working with flutter
-nnoremap <leader>ff :FlutterRun<CR>
-nnoremap <leader>fg :FlutterPubGet<CR>
-nnoremap <leader>fd :FlutterDevices<CR>
-nnoremap <leader>fe :FlutterEmulators<CR>
-nnoremap <leader>fr :FlutterRestart<CR>
-nnoremap <leader>fq :FlutterQuit<CR>
-nnoremap <leader>fo :FlutterOutlineToggle<CR>
-nnoremap <leader>fv :FlutterVisualDebug<CR>
-nnoremap <leader>fl :FlutterDevTools<CR>
-nnoremap <leader>fp :FlutterCopyProfileUrl<CR>
-" Or show a list of commands in Telescope
-nnoremap <leader>fc <cmd>lua require('telescope').extensions.flutter.commands()<CR>
-
-" working with REST
-nmap <leader>rr <Plug>RestNvim<CR>
-nmap <leader>rl <Plug>RestNvimLast<CR>
-nmap <leader>rp <Plug>RestNvimPreview<CR>
+nnoremap <space>t <cmd>TroubleToggle<cr>
 
 " testing
 let test#strategy = "vimux"
@@ -298,10 +266,6 @@ augroup END
 
 " auto completion
 set completeopt-=longest
-
-" dashboard
-let g:dashboard_default_executive ='telescope'
-let g:indentLine_fileTypeExclude = ['dashboard']
 
 " git
 let g:gitblame_enabled = 0
@@ -433,9 +397,6 @@ lsp_installer.on_server_ready(
     end
 )
 
--- flutter-tools
-require('flutter-tools').setup{}
-
 -- indent guides
 vim.opt.list = true
 --vim.opt.listchars:append("space:⋅")
@@ -449,7 +410,7 @@ require("indent_blankline").setup {
 
 require("lualine").setup {
     options = {
-        theme = "github"
+        theme = "github_dimmed"
     }
 }
 
@@ -461,24 +422,7 @@ require("trouble").setup {
 
 -- telescope integration
 local telescope = require("telescope")
-telescope.setup {
-    defaults = {
-        file_ignore_patterns = {"node_modules"}
-    },
-  pickers = {
-    find_files = {
-      hidden = true
-      }
-    }
-}
-telescope.load_extension("flutter")
-
-require "nvim-tree".setup {
-    view = {
-        width = 50,
-        auto_resize = true
-    }
-}
+telescope.setup {}
 
 require("bufferline").setup {
   options = {
@@ -501,7 +445,6 @@ require('close_buffers').setup({
 local nullls = require('null-ls')
 nullls.setup({
   sources = {
-    nullls.builtins.formatting.clang_format,
     nullls.builtins.formatting.black,
     nullls.builtins.diagnostics.mypy,
     nullls.builtins.formatting.prettierd,
@@ -511,15 +454,12 @@ nullls.setup({
   }
 })
 
-require("rest-nvim").setup {}
 require("nvim-ts-autotag").setup {}
 require("pears").setup()
 require("gitsigns").setup {}
 require('tabout').setup{}
 require'colorizer'.setup()
-require("focus").setup({
-  excluded_filetypes = { 'fterm', 'term', 'DiffviewFiles' },
-})
+require("focus").setup()
 require'diffview'.setup()
 require("zen-mode").setup{}
 
@@ -528,4 +468,5 @@ require('go').setup()
 require('dressing').setup{}
 require('goto-preview').setup{}
 require('todo-comments').setup{}
+
 EOF

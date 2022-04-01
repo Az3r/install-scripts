@@ -51,3 +51,49 @@ services:
     image: adminer
     environment:
       VIRTUAL_HOST: adminer.localhost
+  clickhouse:
+    image: "yandex/clickhouse-server:21.12"
+    environment:
+      - CLICKHOUSE_DB=uptrace
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "localhost:8123/ping"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+  uptrace:
+    image: "uptrace/uptrace:latest"
+    volumes:
+      - ./uptrace.yml:/etc/uptrace/uptrace.yml
+    ports:
+      - "14317:14317" # OTLP
+      - "14318:14318" # UI and HTTP API
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+    environment:
+      VIRTUAL_HOST: uptrace.localhost
+      VIRTUAL_PORT: 14318
+  zookeeper:
+    image: zookeeper
+  kafka:
+    image: "bitnami/kafka:latest"
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_LISTENERS: CLIENT://:9092,EXTERNAL://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: CLIENT
+    ports:
+      - 9092:9092
+      - 9093:9093
+    depends_on:
+      - zookeeper
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    environment:
+      VIRTUAL_HOST: kafdrop.localhost
+      VIRTUAL_PORT: 9000
+      KAFKA_BROKERCONNECT: "kafka:9092"
+    depends_on:
+      - kafka
