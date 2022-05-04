@@ -28,23 +28,6 @@ asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
 asdf install nodejs latest
 asdf global nodejs latest
 
-# erlang
-asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
-export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
-asdf install erlang latest
-asdf global erlang latest
-
-# elixir
-asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-asdf install elixir latest
-asdf global elixir latest
-
-# rust
-sudo apt-get install -y libssl-dev pkg-config
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-rustup default nightly
-cargo install cargo-edit
-
 # docker and docker-compose
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
@@ -69,7 +52,7 @@ wget -q -O - https://git.io/vQhTU | bash
 wget -qO- https://dot.net/v1/dotnet-install.sh | bash
 
 # formatter
-sudo apt-get install -y clang-format shellcheck sqlformat
+sudo apt-get install -y clang-format shellcheck pgformatter
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 npm install -g @fsouza/prettierd
 
