@@ -36,8 +36,6 @@ Plug 'sindrets/diffview.nvim' " Single tabpage interface for easily cycling thro
 Plug 'beauwilliams/focus.nvim' " Window Management Enhancements for Neovim
 Plug 'f-person/git-blame.nvim' " provide gitblame functionality
 Plug 'jose-elias-alvarez/null-ls.nvim' " better than efm-language-server
-Plug 'akinsho/bufferline.nvim' " display buffers on top
-Plug 'kazhala/close-buffers.nvim' " quickly delete multiple buffers, work with bufferline
 Plug 'hoob3rt/lualine.nvim' " statusline
 Plug 'ggandor/lightspeed.nvim' " vim-sneak for neovim
 Plug 'tpope/vim-repeat' " repeat command
@@ -132,8 +130,8 @@ set splitbelow
 
 " colorscheme
 set termguicolors
-colorscheme github_dimmed
-" colorscheme kanagawa
+" colorscheme github_dimmed
+colorscheme kanagawa
 
 " closetags
 let g:closetag_filenames = '*.js, *.jsx, *.ts, *.tsx'
@@ -175,17 +173,11 @@ nnoremap $ g_
 nnoremap 0 _
 
 " buffer managment
-nnoremap <a-j> :BufferLineCyclePrev<CR>
-nnoremap <a-k> :BufferLineCycleNext<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>a :wa<CR>
-nnoremap <a-w> :BDelete this<CR>
-nnoremap <a-a> :BWipeout hidden<CR>
-nnoremap <c-w> :q<CR>
 
 
 " Vimux
-let g:VimuxHeight = '40'
 let g:VimuxOrientation = 'h'
 nnoremap <silent> <space><space> :VimuxPromptCommand<CR>
 nnoremap <silent> <space>vz :VimuxZoomRunner<CR>
@@ -230,7 +222,7 @@ vnoremap <silent> <space>. <cmd>lua vim.lsp.buf.range_code_action()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.rename()<CR>
 " FLoat terminal
 nnoremap <silent> ;t <cmd>lua require("FTerm").toggle()<CR>
-tnoremap <silent> <w-q> <C-\><C-n><cmd>lua require("FTerm").toggle()<CR>
+tnoremap <silent> <c-q> <C-\><C-n><cmd>lua require("FTerm").toggle()<CR>
 " Jump to diagnostics
 nnoremap <silent> ]g <cmd>lua vim.diagnostic.goto_next()<CR>
 nnoremap <silent> [g <cmd>lua vim.diagnostic.goto_prev()<CR>
@@ -408,11 +400,7 @@ require("indent_blankline").setup {
     show_current_context_start = true
 }
 
-require("lualine").setup {
-    options = {
-        theme = "github_dimmed"
-    }
-}
+require("lualine").setup {}
 
 require("trouble").setup {
     position = "right",
@@ -423,24 +411,6 @@ require("trouble").setup {
 -- telescope integration
 local telescope = require("telescope")
 telescope.setup {}
-
-require("bufferline").setup {
-  options = {
-    numbers = "buffer_id"
-  }
-}
-
-require('close_buffers').setup({
-  preserve_window_layout = { 'this', 'hidden' },
-  next_buffer_cmd = function(windows)
-    require('bufferline').cycle(1)
-    local bufnr = vim.api.nvim_get_current_buf()
-
-    for _, window in ipairs(windows) do
-      vim.api.nvim_win_set_buf(window, bufnr)
-    end
-  end,
-})
 
 local nullls = require('null-ls')
 nullls.setup({

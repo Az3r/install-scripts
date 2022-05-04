@@ -119,8 +119,8 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias lg="lazygit"
-alias pip="pip3"
-alias python="python3"
+alias pip="python3.10 -m pip"
+alias python="python3.10"
 alias code="code-insiders"
 
 path+=$ANDROID_SDK_ROOT/emulator 
